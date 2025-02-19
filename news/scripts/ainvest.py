@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import os
 
 # 获取当前文件名，用于日志标识
-util = SpiderUtil(current_file=os.path.splitext(os.path.basename(__file__))[0])
+util = SpiderUtil()
 filename = "./news/data/ainvest/list.json"
 
 # 添加请求头

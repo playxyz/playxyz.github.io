@@ -11,9 +11,14 @@ from typing import Dict, Optional
 
 
 class SpiderUtil:
-    def __init__(self, current_file: str):
+    def __init__(self):
+        # 打印调用栈信息
+        stack = traceback.extract_stack()
+        # 获取倒数第二个调用（即调用 SpiderUtil() 的地方）
+        filename = os.path.basename(stack[-2].filename)
+        # 获取文件名，不要后缀
+        self.current_file = filename.split(".")[0]
         self.path = "./news/scripts/util/urls.json"
-        self.current_file = current_file
 
     # 打印日志
     def info(self, message):
