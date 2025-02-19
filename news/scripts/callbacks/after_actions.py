@@ -30,7 +30,7 @@ def check_and_send_action_errors():
         with open("./tmp/action_errors.log", "r") as file:
             action_errors = file.read().strip()
         if action_errors:
-            send_feishu_webhook(action_errors)
+            send_feishu_webhook("pw: {}".format(action_errors))
             print("信息: 飞书消息已成功发送")
         else:
             print("警告: action_errors.log 文件不存在或为空")
