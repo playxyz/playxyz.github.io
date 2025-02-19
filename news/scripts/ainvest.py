@@ -25,7 +25,7 @@ def get_detail(link):
             lxml = BeautifulSoup(response.text, "lxml")
             soup = lxml.select_one(".news-content")
 
-            ad_elements = soup.select("script,style")
+            ad_elements = soup.select("script,style,visualization")
             # 移除这些元素
             for element in ad_elements:
                 element.decompose()
