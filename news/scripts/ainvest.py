@@ -73,7 +73,7 @@ def run():
         # 获取前3个实际加载的新闻项（确保有内容）
         news_items = page.query_selector_all(
             "div.article-item:has(.article-title:not(:empty))"
-        )[:3]
+        )[:10]
         util.info(f"找到 {len(news_items)} 篇文章")
 
         results = []
@@ -120,7 +120,7 @@ def run():
 
         if len(_articles) > 0 and insert:
             if len(_articles) > 10:
-                _articles = _articles[:10]
+                _articles = _articles[:20]
             util.write_json_to_file(_articles, filename)
         browser.close()
         return results
