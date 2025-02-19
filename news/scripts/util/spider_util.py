@@ -24,6 +24,9 @@ class SpiderUtil:
     def info(self, message):
         print(f"[\033[32m{self.current_file}\033[0m] {message}")
 
+    def error(self, message):
+        print(f"[\033[31m{self.current_file}\033[0m] {message}")
+
     def history_posts(self, filepath):
         """
         从指定文件中读取历史文章数据，并返回文章列表和链接列表。

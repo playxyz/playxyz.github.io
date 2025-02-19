@@ -32,10 +32,10 @@ def get_detail(link):
 
             return str(soup).strip()
         else:
-            util.info(f"request: {link} error: {response.status_code}")
+            util.error(f"request: {link} error: {response.status_code}")
             return ""
     except Exception as e:
-        util.info(f"Error fetching {link}: {str(e)}")
+        util.error(f"Error fetching {link}: {str(e)}")
         return ""
 
 
@@ -114,14 +114,14 @@ def run():
                             "language": "en",
                         },
                     )
-                if len(_articles) > 0 and insert:
-                    if len(_articles) > 10:
-                        _articles = _articles[:10]
-                    util.write_json_to_file(_articles, filename)
             except Exception as e:
-                util.info(f"处理文章时出错: {e}")
+                util.error(f"处理文章时出错: {e}")
                 continue
 
+        if len(_articles) > 0 and insert:
+            if len(_articles) > 10:
+                _articles = _articles[:10]
+            util.write_json_to_file(_articles, filename)
         browser.close()
         return results
 
