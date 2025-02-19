@@ -1,8 +1,9 @@
-name: pull news
+name: news
 
 on:
-  repository_dispatch:
-    types: [run]
+  schedule:
+    - cron: '*/20 * * * *'  # 每20分钟运行一次
+  workflow_dispatch:
 
 env:
   token: ${{ secrets.TOKEN }}
@@ -27,6 +28,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Install playwright
+        run: |
+          playwright install chromium
+          playwright install-deps chromium
+
       - name: Execute before actions
         run: |
           chmod +x ./news/scripts/callbacks/before_actions.py
@@ -44,7 +50,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "hemengzhl88@gmail.com"
+          git config --global user.email "hemengzhi88@gmail.com"
           git config --global user.name "genkin-he"
           
       - name: Commit and push changes
