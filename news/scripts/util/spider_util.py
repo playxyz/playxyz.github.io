@@ -11,7 +11,7 @@ from typing import Dict, Optional
 
 
 class SpiderUtil:
-    def __init__(self):
+    def __init__(self, notify=True):
         # 打印调用栈信息
         stack = traceback.extract_stack()
         # 获取倒数第二个调用（即调用 SpiderUtil() 的地方）
@@ -19,6 +19,8 @@ class SpiderUtil:
         # 获取文件名，不要后缀
         self.current_file = filename.split(".")[0]
         self.path = "./news/scripts/util/urls.json"
+        # 添加 notify 属性
+        self.notify = notify
 
     # 打印日志
     def info(self, message):
@@ -136,11 +138,13 @@ class SpiderUtil:
             # 捕获异常并打印错误信息
             print(f"写入临时文件过程中发生错误: {str(e)}")
 
-    def log_action_error(self, error_message, notify=True):
+    def log_action_error(self, error_message, notify=None):
         # 打印错误信息
         print(error_message)
         # 将错误信息追加到临时文件中
-        if notify:
+        # 如果传入了 notify 参数，使用传入的值，否则使用类的 notify 属性
+        should_notify = self.notify if notify is None else notify
+        if should_notify:
             # 定义临时文件路径
             temp_file_path = "./tmp/action_errors.log"
             # 如果错误信息长度超过100，截取前100个字符并换行
@@ -162,7 +166,7 @@ class SpiderUtil:
         """
         return os.getenv(key, fallback)
     
-    def execute_with_timeout(self, func, *args, timeout=50, notify=True, **kwargs):
+    def execute_with_timeout(self, func, *args, timeout=50, notify=None, **kwargs):
         """
         接受一个函数，执行这个函数并设置超时时间，同时统计函数的执行时间
 
@@ -170,6 +174,7 @@ class SpiderUtil:
         func (callable): 要执行的函数
         *args: 传递给函数的位置参数
         timeout (int): 超时时间，单位为秒
+        notify (bool): 是否发送通知，默认使用类的 notify 属性
         **kwargs: 传递给函数的关键字参数
 
         返回:
@@ -197,8 +202,9 @@ class SpiderUtil:
                     self.func(*self.args, **self.kwargs)
                 except Exception as e:
                     traceback.print_exc()
-                    # 使用外部的log_action_error方法
-                    self._log_action_error(f"{filename}#{lineno} error: {repr(e)}\n", notify)
+                    # 使用外部的log_action_error方法，传递 notify 参数
+                    should_notify = self._outer.notify if notify is None else notify
+                    self._log_action_error(f"{filename}#{lineno} error: {repr(e)}\n", should_notify)
                 finally:
                     end_time = time.time()
                     self.execution_time = end_time - start_time   
@@ -247,8 +253,8 @@ class SpiderUtil:
             
         except Exception as e:
             print(f"Error writing data: {e}")
-            # 记录详细错误日志
-            self.log_action_error(f"Error in write_json_to_file: {str(e)}", notify=True)
+            # 记录详细错误日志，使用类的 notify 属性
+            self.log_action_error(f"Error in write_json_to_file: {str(e)}", self.notify)
 
     def contains_language(self, text, languages=None):
         """
