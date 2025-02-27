@@ -5,9 +5,15 @@ on:
     types: [run]
   workflow_dispatch:
 
+# 添加并发控制
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   token: ${{ secrets.TOKEN }}
   feishu_webhook: ${{ secrets.Feishu_Webhook }}
+  timeout-minutes: 9
 
 jobs:
   build:
