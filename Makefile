@@ -1,6 +1,3 @@
-sync:
-	source ./news/scripts/init/init.sh && ./sync.sh
-
 clean:
 	rm -rf .git
 	git config --global init.defaultBranch main
