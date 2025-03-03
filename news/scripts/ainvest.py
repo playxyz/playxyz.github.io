@@ -46,11 +46,11 @@ def run():
     insert = False
     with sync_playwright() as p:
         # 启动浏览器
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         # 访问目标网页
-        page.goto("https://www.ainvest.com/news/")
+        page.goto("https://www.ainvest.com/news/articles/")
         util.info("开始访问网页...")
 
         # 给页面一些额外时间完全加载
