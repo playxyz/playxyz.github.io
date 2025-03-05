@@ -17,7 +17,7 @@ def run():
             # 启动浏览器，添加更多安全选项
             browser = p.firefox.launch(
                 headless=True,
-                slow_mo=1000,
+                slow_mo=300,
             )
 
             # 创建新的浏览器上下文
