@@ -5,6 +5,7 @@ from util.spider_util import SpiderUtil
 # 获取当前文件名，用于日志标识
 util = SpiderUtil()
 filename = "./news/data/xueqiu/list.json"
+storage_state_path = "./news/auth/xueqiu_cookie.json"
 
 def run():
     data = util.history_posts(filename)
@@ -15,7 +16,7 @@ def run():
         try:
             # 启动浏览器，添加更多安全选项
             browser = p.firefox.launch(
-                headless=False,
+                headless=True,
                 slow_mo=1000,
             )
 

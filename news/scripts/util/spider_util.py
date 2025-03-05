@@ -39,7 +39,7 @@ class SpiderUtil:
         from_env = os.getenv("from_env")
         if from_env:
             self.info("使用环境变量中的 cookie")
-            return os.getenv(name)
+            return json.loads(os.getenv(name))
         else:
             self.info("使用默认的 cookie 文件")
             storage_state_path = f"./news/auth/{name}.json"
