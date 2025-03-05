@@ -25,7 +25,7 @@ def run():
             page = context.new_page()
 
             # 访问目标网页
-            page.goto("https://xueqiu.com/", timeout=60000)
+            page.goto("https://xueqiu.com/", timeout=6000)
             util.info("开始访问网页...")
 
             # 检查是否存在登录按钮
