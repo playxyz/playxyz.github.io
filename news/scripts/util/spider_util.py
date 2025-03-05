@@ -29,6 +29,30 @@ class SpiderUtil:
     def error(self, message):
         print(f"[\033[31m{self.current_file}\033[0m] {message}")
 
+    def get_storage_state(self, name):
+        """
+        获取指定名称的浏览器上下文
+
+        参数:
+        name (str): 浏览器上下文的名称
+        """
+        from_env = os.getenv("from_env")
+        if from_env:
+            self.info("使用环境变量中的 cookie")
+            return os.getenv(name)
+        else:
+            self.info("使用默认的 cookie 文件")
+            storage_state_path = f"./news/auth/{name}.json"
+            # 检查 storage_state_path 是否存在，不存在则创建空的 cookie 文件
+            if not os.path.exists(storage_state_path):
+                self.info(f"Cookie 文件不存在，创建新的 cookie 文件: {storage_state_path}")
+                # 确保目录存在
+                os.makedirs(os.path.dirname(storage_state_path), exist_ok=True)
+                # 创建空的 cookie 文件
+                with open(storage_state_path, 'w') as f:
+                    f.write('{"cookies": [], "origins": []}')
+            return storage_state_path
+    
     def history_posts(self, filepath):
         """
         从指定文件中读取历史文章数据，并返回文章列表和链接列表。
@@ -109,7 +133,7 @@ class SpiderUtil:
         """
         return self.current_time().strftime("%Y-%m-%d %H:%M:%S")
     
-    def convert_utc_to_local(self, timestamp):
+    def convert_utc_to_local(self, timestamp, tz=timezone.utc):
         """
         将传入的时间戳转换为本地时间（UTC+8），并返回格式化后的时间字符串。
 
@@ -121,7 +145,7 @@ class SpiderUtil:
         """
         if isinstance(timestamp, str):
             timestamp = float(timestamp)
-        utc_time = datetime.fromtimestamp(timestamp, timezone.utc)
+        utc_time = datetime.fromtimestamp(timestamp, tz)
         local_time = utc_time.astimezone(timezone(timedelta(hours=8)))
         return local_time.strftime("%Y-%m-%d %H:%M:%S")
 

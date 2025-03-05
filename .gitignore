@@ -42,3 +42,6 @@ news/data/ainvest/*
 
 # Playwright
 .playwright-browser/ 
+
+# Cookie
+news/auth/*
