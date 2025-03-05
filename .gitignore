@@ -33,12 +33,6 @@ env/
 *.swo
 .DS_Store
 
-# Project specific
-news/data/*
-!news/data/ainvest/
-news/data/ainvest/*
-!news/data/ainvest/list.json
-
 # Playwright
 .playwright-browser/ 
 
