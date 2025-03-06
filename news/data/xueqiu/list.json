@@ -1,6 +1,20 @@
 {
     "data": [
         {
+            "id": 326286540,
+            "user_id": 1833845374,
+            "author": "牛股侦探",
+            "title": "",
+            "type": "2",
+            "description": "<p>AI圈现在几乎每天都有新消息出来<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>这两天就有好几件<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>我给大家总结总结<h-char unicode=\"ff1a\" class=\"biaodian cjk bd-end bd-jiya\"><h-inner>：</h-inner></h-char></p><p>1<h-char unicode=\"3001\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>、</h-inner></h-char><a href=\"https://xueqiu.com/S/00700?from=status_stock_match\" class=\"xq_stock\">腾讯</a>混元发布发布并开源图生视频模型</p><p><a href=\"https://xueqiu.com/S/00700?from=status_stock_match\" class=\"xq_stock\">腾讯</a>混元发布图生视频模型并对外开源<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>同时上线对口型与动作驱动等玩法<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>并支持生成背景音效及 2K 高质量视频<h-char unicode=\"3002\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>。</h-inner></h-char></p><p>基于图生视频的能力<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>用户只需上传一张图片<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>并简短描述希望画面如何运动<h-char unicode=\"3001\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>、</h-inner></h-char>镜头如何调度等<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>混元即可按要求让图片动起来<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>变成 5 秒的短视频<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>还能自动配上背景音效<h-char unicode=\"3002\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>。</h-inner></h-char></p><p>2<h-char unicode=\"3001\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>、</h-inner></h-char><a href=\"https://xueqiu.com/S/BABA?from=status_stock_match\" class=\"xq_stock\">阿里</a>通义开源RL新模型<br><a href=\"https://xueqiu.com/S/BABA?from=status_stock_match\" class=\"xq_stock\">阿里巴巴</a>发布并开源全新的推理模型通义千问QwQ-32B<h-char unicode=\"3002\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>。</h-inner></h-char>据官方介绍<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>这款仅有320亿参数的模型在性能上不仅能够媲美拥有6710亿参数的DeepSeek-R1<h-char unicode=\"ff08\" class=\"biaodian cjk bd-open bd-jiya\"><h-inner>（</h-inner></h-char>其中370亿被激活<h-char unicode=\"ff09\" class=\"biaodian cjk bd-close bd-end bd-jiya bd-consecutive\"><h-inner>）</h-inner></h-char><h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya bd-consecutive end-portion\" prev=\"bd-close bd-end\"><h-inner>，</h-inner></h-char>更在某些测试中超越了对方<h-char unicode=\"3002\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>。</h-inner></h-char></p><p>3<h-char unicode=\"3001\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>、</h-inner></h-char><a href=\"https://xueqiu.com/S/AAPL?from=status_stock_match\" class=\"xq_stock\">苹果</a>的Mac studio可以本地满血运行DS-R1</p><p>4<h-char unicode=\"3001\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>、</h-inner></h-char>Monica.im推出全球首款AI Agent产品Manus</p><p>据其团队介绍<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>Manus是一个真正自主的AI代理<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>能够解决各类复杂多变的任务<h-char unicode=\"3002\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>。</h-inner></h-char>与传统AI助手不同<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>Manus不仅能提供建议或答案<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>还能直接交付完整的任务成果<h-char unicode=\"3002\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>。</h-inner></h-char></p><p>不管是大厂还是新团队在AI上的推陈出新<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>给我最大的感受是大模型的门槛正在降低<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>普通企业和普通人都能在未来使用上<h-char unicode=\"ff01\" class=\"biaodian cjk bd-end bd-jiya\"><h-inner>！</h-inner></h-char><a href=\"https://xueqiu.com/S/00700\" target=\"_blank\">$腾讯控股(00700)$</a></p>",
+            "link": "https://xueqiu.com/1833845374/326286540",
+            "pub_date": "2025-03-06 19:13:01",
+            "source": "xueqiu",
+            "image": "",
+            "kind": 1,
+            "language": "zh-CN"
+        },
+        {
             "id": 326039454,
             "user_id": 5436386345,
             "author": "痛快舒畅",
@@ -248,19 +262,6 @@
             "description": "Manus是什么水平<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>营销预算和费用那么足吗<h-char unicode=\"ff1f\" class=\"biaodian cjk bd-end bd-jiya\"><h-inner>？</h-inner></h-char><br><img src=\"https://xqimg.imedao.com/195697e20f549f643fef59f3.jpg!800.jpg\" class=\"ke_img\">",
             "link": "https://xueqiu.com/9598793634/326200495",
             "pub_date": "2025-03-06 11:27:10",
-            "source": "xueqiu",
-            "image": "",
-            "kind": 1,
-            "language": "zh-CN"
-        },
-        {
-            "id": 326206515,
-            "user_id": 9598793634,
-            "title": "",
-            "type": "0",
-            "description": "<p>概帮兄弟们<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char>港股科技兄弟们<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char></p><p>我提一个<h-char unicode=\"ff0c\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>，</h-inner></h-char></p><p>再给梁文峰和DeepSeek磕一个吧<h-char unicode=\"3002\" class=\"biaodian cjk bd-end bd-cop bd-hangable bd-jiya\"><h-inner>。</h-inner></h-char></p><p>我先来<h-char unicode=\"ff1a\" class=\"biaodian cjk bd-end bd-jiya\"><h-inner>：</h-inner></h-char></p><p>啊咚<h-char unicode=\"ff01\" class=\"biaodian cjk bd-end bd-jiya\"><h-inner>！</h-inner></h-char></p><p><a href=\"https://xueqiu.com/S/SH513980\" target=\"_blank\">$港股科技50ETF(SH513980)$</a></p>",
-            "link": "https://xueqiu.com/9598793634/326206515",
-            "pub_date": "2025-03-06 11:52:22",
             "source": "xueqiu",
             "image": "",
             "kind": 1,
