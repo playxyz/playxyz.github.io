@@ -7,6 +7,40 @@ util = SpiderUtil()
 filename = "./news/data/xueqiu/list.json"
 storage_state_path = "./news/auth/xueqiu_cookie.json"
 
+
+def get_detail(page):
+    # 获取文章详情内容
+    try:
+        detail_element = page.query_selector(".article__bd__detail")
+        if detail_element:
+            # 移除不需要的元素，如脚本、样式等
+            # 移除 <p style="display: none;">...</p>
+            page.evaluate(
+                """() => {
+                // 移除脚本和样式元素
+                const adElements = document.querySelectorAll('.article__bd__detail script, .article__bd__detail style');
+                for (const element of adElements) {
+                    element.remove();
+                }
+                
+                // 移除隐藏的段落元素 <p style="display: none;">
+                const hiddenParagraphs = document.querySelectorAll('.article__bd__detail p[style*="display: none"]');
+                for (const element of hiddenParagraphs) {
+                    element.remove();
+                }
+            }"""
+            )
+
+            # 获取清理后的HTML内容
+            return detail_element.inner_html().strip()
+        else:
+            util.error("未找到文章详情内容")
+            return ""
+    except Exception as e:
+        util.error(f"获取文章详情时出错: {str(e)}")
+        return ""
+
+
 def run():
     data = util.history_posts(filename)
     _articles = data["articles"]
@@ -21,7 +55,19 @@ def run():
             )
 
             # 创建新的浏览器上下文
-            context = browser.new_context(storage_state=util.get_storage_state("xueqiu_cookie"))
+            try:
+                context = browser.new_context(
+                    storage_state=util.get_storage_state("xueqiu_cookie")
+                )
+            except Exception as e:
+                util.error(f"创建浏览器上下文失败: {e}")
+                # 创建一个没有存储状态的上下文作为备选
+                browser = p.firefox.launch(
+                    headless=False,
+                    slow_mo=300,
+                )
+                context = browser.new_context()
+                util.info("已创建无状态的浏览器上下文")
             page = context.new_page()
 
             # 访问目标网页
@@ -35,7 +81,9 @@ def run():
                 # 等待用户手动完成登录操作
                 util.info("请手动完成登录操作...")
                 # 等待登录按钮消失，表示用户已登录
-                page.wait_for_selector("a:has-text('登录')", state="hidden", timeout=20000)
+                page.wait_for_selector(
+                    "a:has-text('登录')", state="hidden", timeout=20000
+                )
                 util.info("登录操作已完成")
                 storage = context.storage_state(path=storage_state_path)
                 print(storage)
@@ -48,9 +96,9 @@ def run():
 
             # 使用 expect_response 等待 XHR 响应
             with page.expect_response(
-                lambda response: "v4/statuses/home_timeline.json" in response.url and 
-                                "sub_type=original" in response.url and 
-                                response.status == 200
+                lambda response: "v4/statuses/home_timeline.json" in response.url
+                and "sub_type=original" in response.url
+                and response.status == 200
             ) as response_info:
                 # 点击触发 XHR 请求, 按钮被 modal 挡住
                 # 先检查并关闭可能出现的 modal
@@ -58,15 +106,17 @@ def run():
                     util.info("检测到弹窗，尝试关闭")
                     page.click(".modal .close")
                     page.wait_for_selector(".modal", state="hidden", timeout=5000)
-                
+
                 # 点击"只看原发"按钮
                 page.click("a:has-text('只看原发')")
-            
+
             # 获取响应对象
             response = response_info.value
             json_data = response.json()
-            util.info(f"成功获取雪球原创内容，共 {len(json_data.get('home_timeline', []))} 条")
-            
+            util.info(
+                f"成功获取雪球原创内容，共 {len(json_data.get('home_timeline', []))} 条"
+            )
+
             # 处理获取到的数据
             articles = json_data.get("home_timeline", [])
             for article in articles[:10]:  # 只处理前10条
@@ -82,43 +132,19 @@ def run():
                 type = article.get("type", "")
                 title = article.get("title", "")
                 created_at = article.get("created_at", "")
-                pub_date = util.convert_utc_to_local(created_at/1000, tz=timezone(timedelta(hours=8)))
-                
+                pub_date = util.convert_utc_to_local(
+                    created_at / 1000, tz=timezone(timedelta(hours=8))
+                )
+
                 util.info(f"开始访问网页: {link}")
                 page.goto(link)
 
                 # 等待文章详情内容加载
+                author = ""
                 page.wait_for_selector(".article__bd__detail", timeout=10000)
-                
-                # 获取文章详情内容
-                try:
-                    detail_element = page.query_selector(".article__bd__detail")
-                    if detail_element:
-                        # 移除不需要的元素，如脚本、样式等
-                        # 移除 <p style="display: none;">...</p>
-                        page.evaluate("""() => {
-                            // 移除脚本和样式元素
-                            const adElements = document.querySelectorAll('.article__bd__detail script, .article__bd__detail style');
-                            for (const element of adElements) {
-                                element.remove();
-                            }
-                            
-                            // 移除隐藏的段落元素 <p style="display: none;">
-                            const hiddenParagraphs = document.querySelectorAll('.article__bd__detail p[style*="display: none"]');
-                            for (const element of hiddenParagraphs) {
-                                element.remove();
-                            }
-                        }""")
-                        
-                        # 获取清理后的HTML内容
-                        description = detail_element.inner_html().strip()
-                    else:
-                        util.error("未找到文章详情内容")
-                        description = ""
-                except Exception as e:
-                    util.error(f"获取文章详情时出错: {str(e)}")
-                    description = ""
-
+                if "user" in article and "screen_name" in article.get("user", {}):
+                    author = article.get("user", {}).get("screen_name", "")
+                description = get_detail(page)
                 if description != "":
                     # 添加到文章列表
                     insert = True
@@ -127,6 +153,7 @@ def run():
                         {
                             "id": id,
                             "user_id": user_id,
+                            "author": author,
                             "title": title,
                             "type": type,
                             "description": description,
@@ -149,6 +176,7 @@ def run():
             browser.close()
         except Exception as e:
             util.error(f"执行脚本时出错: {str(e)}")
-            
+
+
 # 使用 SpiderUtil 的 execute_with_timeout 方法执行 run 函数
 util.execute_with_timeout(run, timeout=120)
