@@ -1,6 +1,8 @@
 from datetime import timedelta, timezone
 from playwright.sync_api import sync_playwright
 from util.spider_util import SpiderUtil
+from bs4 import BeautifulSoup
+import re
 
 # 获取当前文件名，用于日志标识
 util = SpiderUtil()
@@ -8,31 +10,66 @@ filename = "./news/data/xueqiu/list.json"
 storage_state_path = "./news/auth/xueqiu_cookie.json"
 
 
-def get_detail(page):
+def remove_ad_elements(soup, user_id):
+    if str(user_id) == "8680038754":
+        # 查找包含 "添加⭐️标 不再错过推送" 的 <b> 标签
+        start_b_tags = soup.find_all(
+            "b", string=lambda text: text and ("添加⭐️标 不再错过推送" in text)
+        )
+
+        # 如果找到了开始标记
+        if start_b_tags:
+            start_b = start_b_tags[0]
+            start_p = start_b.find_parent("p")
+            if start_p:
+                # 移除这个 <p> 标签之前的所有 <p> 标签
+                current = start_p.previous_sibling
+                while current:
+                    next_element = current.previous_sibling
+                    if current.name == "p":
+                        current.decompose()
+                    current = next_element
+                # 移除包含开始标记的 <p> 标签本身
+                start_p.decompose()
+
+        # 查找包含 "关注⭐️红与绿⭐️" 的 <b> 标签
+        end_b_tags = soup.find_all(
+            "b", string=lambda text: text and ("关注⭐️红与绿⭐️" in text)
+        )
+
+        # 如果找到了结束标记
+        if end_b_tags:
+            end_b = end_b_tags[0]
+            end_p = end_b.find_parent("p")
+            if end_p:
+                # 移除这个 <p> 标签及其之后的所有 <p> 标签
+                current = end_p
+                while current:
+                    next_element = current.next_sibling
+                    if current.name == "p":
+                        current.decompose()
+                    current = next_element
+
+
+def get_detail(page,user_id):
     # 获取文章详情内容
     try:
         detail_element = page.query_selector(".article__bd__detail")
         if detail_element:
-            # 移除不需要的元素，如脚本、样式等
-            # 移除 <p style="display: none;">...</p>
-            page.evaluate(
-                """() => {
-                // 移除脚本和样式元素
-                const adElements = document.querySelectorAll('.article__bd__detail script, .article__bd__detail style');
-                for (const element of adElements) {
-                    element.remove();
-                }
-                
-                // 移除隐藏的段落元素 <p style="display: none;">
-                const hiddenParagraphs = document.querySelectorAll('.article__bd__detail p[style*="display: none"]');
-                for (const element of hiddenParagraphs) {
-                    element.remove();
-                }
-            }"""
-            )
+            html_content = detail_element.inner_html()
+            # 使用BeautifulSoup处理HTML
+            soup = BeautifulSoup(html_content, "html.parser")
+            # 移除脚本和样式元素
+            for element in soup.select("script, style"):
+                element.decompose()
 
+            # 移除隐藏的段落元素
+            for element in soup.find_all("p", style=re.compile(r"display:\s*none")):
+                element.decompose()
+
+            remove_ad_elements(soup, user_id)
             # 获取清理后的HTML内容
-            return detail_element.inner_html().strip()
+            return str(soup).strip()
         else:
             util.error("未找到文章详情内容")
             return ""
@@ -144,7 +181,7 @@ def run():
                 page.wait_for_selector(".article__bd__detail", timeout=10000)
                 if "user" in article and "screen_name" in article.get("user", {}):
                     author = article.get("user", {}).get("screen_name", "")
-                description = get_detail(page)
+                description = get_detail(page,user_id)
                 if description != "":
                     # 添加到文章列表
                     insert = True
