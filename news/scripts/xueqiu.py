@@ -12,8 +12,11 @@ storage_state_path = "./news/auth/xueqiu_cookie.json"
 
 def remove_ad_elements(soup, user_id):
     if str(user_id) == "8680038754":
-        # 查找包含 "添加⭐️标 不再错过推送" 的 <b> 标签
-        start_b_tags = soup.select_one("b:has-text('添加⭐️标 不再错过推送')")
+        # 查找包含 "添加⭐️标 不再错过推送" 的元素
+        start_b_tags = []
+        for b_tag in soup.find_all('b'):
+            if '添加⭐️标 不再错过推送' in b_tag.text:
+                start_b_tags.append(b_tag)
 
         # 如果找到了开始标记
         if start_b_tags:
@@ -30,8 +33,11 @@ def remove_ad_elements(soup, user_id):
                 # 移除包含开始标记的 <p> 标签本身
                 start_p.decompose()
 
-        # 查找包含 "关注⭐️红与绿⭐️" 的 <b> 标签
-        end_b_tags = soup.select_one("b:has-text('关注⭐️红与绿⭐️')")
+        # 查找包含 "关注⭐️红与绿⭐️" 的元素
+        end_b_tags = []
+        for b_tag in soup.find_all('b'):
+            if '关注⭐️红与绿⭐️' in b_tag.text:
+                end_b_tags.append(b_tag)
 
         # 如果找到了结束标记
         if end_b_tags:
