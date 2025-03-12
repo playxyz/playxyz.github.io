@@ -46,7 +46,7 @@ def run():
     insert = False
     with sync_playwright() as p:
         # 启动浏览器
-        browser = p.firefox.launch(headless=False)
+        browser = p.firefox.launch(headless=True)
         page = browser.new_page()
 
         # 访问目标网页
