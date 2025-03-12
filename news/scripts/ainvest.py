@@ -46,7 +46,7 @@ def run():
     insert = False
     with sync_playwright() as p:
         # 启动浏览器
-        browser = p.firefox.launch(headless=True)
+        browser = p.firefox.launch(headless=False)
         page = browser.new_page()
 
         # 访问目标网页
@@ -66,13 +66,13 @@ def run():
         # 等待实际内容加载完成
         # 等待第一个带有实际内容的文章标题出现
         page.wait_for_selector(
-            "div.article-item .article-title:not(:empty)", timeout=10000
+            "#news-articles h3:not(:empty)", timeout=10000
         )
         util.info("文章内容已加载")
 
         # 获取前3个实际加载的新闻项（确保有内容）
         news_items = page.query_selector_all(
-            "div.article-item:has(.article-title:not(:empty))"
+            "#news-articles .grid a"
         )[:10]
         util.info(f"找到 {len(news_items)} 篇文章")
 
@@ -85,19 +85,16 @@ def run():
 
             try:
                 # 等待每个文章的具体元素
-                title = item.query_selector(".article-title").inner_text().strip()
+                title = item.query_selector("h3").inner_text().strip()
                 if not title:  # 如果标题为空，跳过这篇文章
                     util.info("跳过空标题文章")
                     continue
 
-                link = item.get_attribute("datasrc").strip()
+                link = "https://www.ainvest.com{}".format(item.get_attribute("href").strip())
                 if link in ",".join(_links):
                     util.info(f"exists link: {link}")
                     continue
-                title = item.query_selector(".article-title").inner_text().strip()
-                image = (
-                    item.query_selector(".img-box > img").get_attribute("src").strip()
-                )
+                image = ""
                 description = get_detail(link)
                 if description != "":
                     insert = True
