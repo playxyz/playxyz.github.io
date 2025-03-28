@@ -54,7 +54,7 @@ def run():
             )
             page.wait_for_selector(".type-post", timeout=10000)
 
-            news_items = page.query_selector_all(".type-post")[:3]
+            news_items = page.query_selector_all(".type-post")[:5]
 
             util.info(f"找到 {len(news_items)} 篇文章")
 
