@@ -17,6 +17,7 @@ headers = {
     "upgrade-insecure-requests": "1",
 }
 
+
 def get_detail(link):
     util.info(f"link: {link}")
     try:
@@ -50,33 +51,22 @@ def run():
             headless=util.get_crawler_headless(),
             slow_mo=300,
         )
-        page = browser.new_page()
-
+        context = browser.new_context()
+        page = util.get_page(context)
         # 访问目标网页
-        page.goto("https://www.ainvest.com/news/articles/")
+        page.goto(
+            "https://www.ainvest.com/news/articles/",
+            wait_until="domcontentloaded",
+            timeout=10000,
+        )
         util.info("开始访问网页...")
 
-        # 给页面一些额外时间完全加载
-        page.wait_for_timeout(3000)  # 等待3秒
-        # 触发页面刷新
-        page.reload()
-        util.info("页面刷新完成")
-
-        # 等待页面加载完成
-        page.wait_for_load_state("networkidle")
-        util.info("网络请求已完成")
-
-        # 等待实际内容加载完成
         # 等待第一个带有实际内容的文章标题出现
-        page.wait_for_selector(
-            "#news-articles h3:not(:empty)", timeout=10000
-        )
+        page.wait_for_selector("#news-articles h3:not(:empty)", timeout=10000)
         util.info("文章内容已加载")
 
         # 获取前3个实际加载的新闻项（确保有内容）
-        news_items = page.query_selector_all(
-            "#news-articles .grid a"
-        )[:10]
+        news_items = page.query_selector_all("#news-articles .grid a")[:5]
         util.info(f"找到 {len(news_items)} 篇文章")
 
         results = []
@@ -93,7 +83,9 @@ def run():
                     util.info("跳过空标题文章")
                     continue
 
-                link = "https://www.ainvest.com{}".format(item.get_attribute("href").strip())
+                link = "https://www.ainvest.com{}".format(
+                    item.get_attribute("href").strip()
+                )
                 if link in ",".join(_links):
                     util.info(f"exists link: {link}")
                     continue
@@ -119,7 +111,7 @@ def run():
                 continue
 
         if len(_articles) > 0 and insert:
-            if len(_articles) > 10:
+            if len(_articles) > 20:
                 _articles = _articles[:20]
             util.write_json_to_file(_articles, filename)
         browser.close()
