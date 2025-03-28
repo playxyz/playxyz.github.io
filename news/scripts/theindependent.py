@@ -113,5 +113,5 @@ def run():
             util.error(f"执行脚本时出错: {str(e)}")
 
 
-if __name__ == "__main__":
-    util.execute_with_timeout(run, timeout=120)
+# if __name__ == "__main__":
+#     util.execute_with_timeout(run, timeout=120)
