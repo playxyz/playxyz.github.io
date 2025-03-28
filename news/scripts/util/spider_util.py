@@ -342,6 +342,34 @@ class SpiderUtil:
             
         return False
 
+    def get_page(self, context):
+        """
+        从浏览器上下文创建新页面并进行基本配置
+
+        参数:
+        context (BrowserContext): Playwright 浏览器上下文
+        url (str): 可选，如果提供则导航到该URL
+        js_disable_webdriver (bool): 是否禁用 webdriver 检测，默认为 True
+        timeout (int): 导航超时时间（毫秒），默认为 10000
+
+        返回:
+        Page: 配置好的 Playwright Page 实例
+        """
+        try:
+            # 创建一个新的页面（相当于浏览器中的一个新标签页）
+            # 在Playwright中，context代表一个浏览器会话，而page代表会话中的一个标签页
+            # 每次调用new_page()都会在同一个浏览器会话中创建一个新的标签页
+            page = context.new_page()
+            
+            # 禁用 webdriver 检测
+            js = "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            page.add_init_script(js)
+            
+            return page
+        except Exception as e:
+            self.error(f"创建页面时出错: {str(e)}")
+            raise
+
     def contains_language(self, text, languages=None):
         """
         判断文本是否包含指定的语言字符。
