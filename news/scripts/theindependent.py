@@ -19,7 +19,7 @@ def get_detail(page):
             soup = BeautifulSoup(html_content, "html.parser")
             # 移除脚本和样式元素
             for element in soup.select(
-                "script, style, iframe, .sharethis-inline-share-buttons,.insert_ads"
+                "script, style, iframe, .sharethis-inline-share-buttons,.insert_ads,[class*=tisg-]"
             ):
                 element.decompose()
 
