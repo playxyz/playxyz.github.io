@@ -59,7 +59,7 @@ def run():
             util.info(f"找到 {len(news_items)} 篇文章")
 
             # 处理获取到的数据
-            for item in news_items[:5]:
+            for item in news_items[:2]:
                 link_element = item.query_selector(".entry-title > a")
                 if not link_element:
                     util.info("未找到链接元素")
