@@ -19,7 +19,7 @@ def get_detail(page):
             soup = BeautifulSoup(html_content, "html.parser")
             # 移除脚本和样式元素
             for element in soup.select(
-                "script, style, iframe, .sharethis-inline-share-buttons,.insert_ads,[class*=tisg-]"
+                "script, style, iframe, .sharethis-inline-share-buttons,.insert_ads,[class*=tisg-],.post-share,.instagram-media,.navigation"
             ):
                 element.decompose()
 
@@ -59,7 +59,7 @@ def run():
             util.info(f"找到 {len(news_items)} 篇文章")
 
             # 处理获取到的数据
-            for item in news_items[:1]:
+            for item in news_items[:5]:
                 link_element = item.query_selector(".entry-title > a")
                 if not link_element:
                     util.info("未找到链接元素")
@@ -80,8 +80,7 @@ def run():
                 util.info(f"开始访问详情: {link}")
                 detail_page.goto(link, wait_until="domcontentloaded", timeout=10000)
                 detail_page.wait_for_selector("article", timeout=10000)
-
-                description = get_detail(page)
+                description = get_detail(detail_page)
                 if description != "":
                     # 添加到文章列表
                     insert = True
