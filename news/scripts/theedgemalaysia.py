@@ -18,14 +18,42 @@ def get_detail(page):
             # 使用BeautifulSoup处理HTML
             soup = BeautifulSoup(html_content, "html.parser")
             # 选取新闻内容主体
-            print(soup)
             soup = soup.select_one("div[class*=news-detail_newsTextDataWrap]")
-            print(soup)
             # 移除脚本和样式元素
             for element in soup.select(
                 "script, style, iframe, .sharethis-inline-share-buttons,.insert_ads,[class*=tisg-],.post-share,.instagram-media,.navigation"
             ):
                 element.decompose()
+
+            # 查找并移除包含 "Read Also" 的段落及其链接
+            read_also_elements = soup.find_all(
+                "p", string=lambda text: text and "Read also" in text
+            )
+            if not read_also_elements:
+                # 查找更复杂的结构，如包含strong、em和a标签的"Read Also"段落
+                read_also_elements = soup.find_all(
+                    "p",
+                    lambda tag: (
+                        tag.find("strong")
+                        and tag.find("em")
+                        and tag.find("a")
+                        and "Read also" in tag.text
+                        if hasattr(tag, "text")
+                        else False
+                    ),
+                )
+
+            for read_also_p in read_also_elements:
+                util.info(f"移除 Read Also 段落: {read_also_p.get_text()[:30]}...")
+                # 移除该段落
+                read_also_p.decompose()
+
+                # 移除该段落后面的所有内容
+                next_element = read_also_p.next_sibling
+                while next_element:
+                    next_sibling = next_element.next_sibling
+                    next_element.decompose()
+                    next_element = next_sibling
 
             return str(soup).strip()
         else:
@@ -60,7 +88,7 @@ def run():
             # 等待页面加载并查找所有包含 "/node/" 的链接
             page.wait_for_selector("a[href^='/node/']", timeout=10000)
             util.info("页面已加载，开始查找文章链接...")
-            
+
             # 查找所有 href 是 "/node/" + 数字 的 a 标签
             news_items = page.query_selector_all("a[href^='/node/']")
 
@@ -70,16 +98,18 @@ def run():
             else:
                 util.info("未找到文章链接")
                 return
-            
+
             # 处理获取到的数据
             for item in news_items:
-                link = "https://theedgemalaysia.com" + item.get_attribute("href").strip()
+                link = (
+                    "https://theedgemalaysia.com" + item.get_attribute("href").strip()
+                )
                 if link in ",".join(_links):
                     util.info(f"exists link: {link}")
                     continue
 
                 title = item.inner_text().strip()
-                if not title:  
+                if not title:
                     util.info("跳过空标题文章")
                     continue
 
