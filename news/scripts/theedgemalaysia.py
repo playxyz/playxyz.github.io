@@ -108,7 +108,7 @@ def run():
                     util.info(f"exists link: {link}")
                     continue
 
-                title = item.inner_text().strip()
+                title = item.query_selector(".row > .col-12 > span").inner_text().strip()
                 if not title:
                     util.info("跳过空标题文章")
                     continue
