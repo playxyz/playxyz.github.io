@@ -220,4 +220,5 @@ def run():
 
 # 使用 SpiderUtil 的 execute_with_timeout 方法执行 run 函数
 if __name__ == "__main__":
-    util.execute_with_timeout(run, timeout=120)
+    # util.execute_with_timeout(run, timeout=120)
+    util.info("stop")
